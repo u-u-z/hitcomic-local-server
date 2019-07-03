@@ -1,5 +1,9 @@
 package main
 
+/**
+Thank you for working with me and teaching me to write go in the right way. > <
+**/
+
 import (
 	"fmt"
 	"os"
@@ -41,5 +45,6 @@ func main() {
 			"message": "pong",
 		})
 	})
+	myServer.Static("/assets", "./assets")
 	myServer.Run()
 }
