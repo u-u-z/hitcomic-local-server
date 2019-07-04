@@ -13,6 +13,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
+// Server ...
 type Server struct {
 	isDebug  bool
 	db       *gorm.DB
