@@ -21,6 +21,12 @@ type Server struct {
 	dbString string
 }
 
+// TicketInfo ...
+type TicketInfo struct {
+	Key   string `json:"key" form:"key"`
+	Token string `json:"token" form:"token"`
+}
+
 func (server *Server) createDB() {
 	connectionString := os.Getenv("ETS_DB")
 	if len(connectionString) == 0 {
@@ -46,6 +52,15 @@ func (server *Server) createServer() {
 	myServer.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
+		})
+	})
+	myServer.POST("/ticket", func(c *gin.Context) {
+		var ticketInfo TicketInfo
+		c.BindJSON(&ticketInfo)
+
+		c.JSON(200, gin.H{
+			"key":   ticketInfo.Key,
+			"token": ticketInfo.Token,
 		})
 	})
 	myServer.Static("/assets", "./assets")
