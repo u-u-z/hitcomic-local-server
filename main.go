@@ -68,15 +68,6 @@ func (server *Server) createServer() {
 
 func main() {
 	fmt.Println("dbString example: root:my-secret-pw@tcp(127.0.0.1:3306)/dbname?charset=utf8&parseTime=True")
-	/*
-		myServer := gin.Default()
-		myServer.GET("/ping", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "pong",
-			})
-		})
-		myServer.Static("/assets", "./assets")
-		myServer.Run()*/
 	ticketServer := &Server{}
 	ticketServer.isDebug = len(os.Getenv("DUAN_DEBUG")) > 0
 	ticketServer.createDB()
