@@ -1,6 +1,10 @@
 package main
 
-import "regexp"
+import (
+	"github.com/jinzhu/gorm"
+	"regexp"
+	"fmt"
+)
 
 // SafeService ...
 type SafeService struct {
@@ -8,10 +12,12 @@ type SafeService struct {
  
 // QueryService ...
 type QueryService struct{
+	app *Server
 }
 
 // CheckService ...
 type CheckService struct{
+	app *Server
 }
 
 // VerifyService ...
@@ -33,6 +39,52 @@ func (service *SafeService) CheckToken(token string) (bool, error) {
 }
 
 // QueryTicket  ...
-func (service *QueryService) QueryTicket(key string) {
-	return Server.db.where("Key = ?",key).first(&ticket) //Get a first matching record
+func (service *QueryService) QueryTicket(db *gorm.DB, key string) *gorm.DB{
+	result := Tickets{Key: key}
+	return db.First(&result) //Get a first matching record
+}
+
+// IsZero ...
+func (service *CheckService) IsZero(db *gorm.DB, key string) bool{
+	type Result struct{
+		Key   string
+		Type  uint
+		Times uint
+	}
+	var result Result
+	ticket := Tickets{Key: key}
+	db.First(&ticket).Scan(&result) //Find Ticket times
+	fmt.Println(result)
+	if result.Times == 0 {
+		return true
+	}
+	return false
+}
+
+//VerifyTicket ...
+func (service *VerifyService) VerifyTicket(db *gorm.DB, key string) bool{
+	type Result struct{
+		Key   string
+		Type  uint
+		Times uint
+	}
+	var result Result
+	ticket := Tickets{Key: key}
+	db.First(&ticket).Scan(&result)
+	db.Model(&ticket).First(&ticket).Update("Times", result.Times-1)
+	return true
+}
+
+//VerifyStaff ...
+func (service *VerifyService) VerifyStaff(db *gorm.DB, key string) bool{
+	type Result struct{
+		Key   string
+		Type  uint
+		Times uint
+	}
+	var result Result
+	ticket := Tickets{Key: key}
+	db.First(&ticket).Scan(&result)
+	db.Model(&ticket).First(&ticket).Update("Times", result.Times-1)
+	return true
 }

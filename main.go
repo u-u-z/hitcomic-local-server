@@ -30,7 +30,7 @@ type TicketInfo struct {
 func (server *Server) createDB() {
 	connectionString := os.Getenv("ETS_DB")
 	if len(connectionString) == 0 {
-		connectionString = "root:my-secret-pw@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True"
+		connectionString = "root:1234@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True"
 	}
 	db, err := gorm.Open("mysql", connectionString)
 	if err != nil {
@@ -49,6 +49,12 @@ func (server *Server) createDB() {
 func (server *Server) createServer() {
 	myServer := gin.Default()
 	server.server = myServer
+
+	// Middleware
+	myServer.Use(func(c *gin.Context) {
+		c.Set("DB", server.db)
+	})
+
 	myServer.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -61,6 +67,12 @@ func (server *Server) createServer() {
 		c.JSON(200, gin.H{
 			"key":   ticketInfo.Key,
 			"token": ticketInfo.Token,
+		})
+	})
+	myServer.GET("/test", func(c *gin.Context) {
+		service := VerifyService{}
+		c.JSON(200, gin.H{
+			"message": service.VerifyTicket(server.db, "test"),
 		})
 	})
 	myServer.Static("/assets", "./assets")
