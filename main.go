@@ -50,6 +50,7 @@ func (server *Server) createServer() {
 	myServer := gin.Default()
 	server.server = myServer
 
+	ticketController := &TicketController{server: server}
 	// Middleware
 	myServer.Use(func(c *gin.Context) {
 		c.Set("DB", server.db)
@@ -61,15 +62,7 @@ func (server *Server) createServer() {
 			"message": "pong",
 		})
 	})
-	myServer.POST("/ticket", func(c *gin.Context) {
-		var ticketInfo TicketInfo
-		c.BindJSON(&ticketInfo)
-
-		c.JSON(200, gin.H{
-			"key":   ticketInfo.Key,
-			"token": ticketInfo.Token,
-		})
-	})
+	myServer.POST("/ticket", SafeMiddleware(), ticketController.Post)
 	myServer.GET("/test", func(c *gin.Context) {
 		service := QueryService{}
 		c.JSON(200, gin.H{

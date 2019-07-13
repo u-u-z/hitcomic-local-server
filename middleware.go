@@ -24,6 +24,7 @@ func SafeMiddleware() gin.HandlerFunc {
 		keyStatus, _ := CheckKey(ticketInfo.Key)
 		tokenStatus, _ := CheckToken(ticketInfo.Token)
 		if keyStatus && tokenStatus {
+			c.Set("ticket", ticketInfo)
 			c.Next()
 		} else {
 			c.JSON(200, gin.H{
@@ -32,5 +33,13 @@ func SafeMiddleware() gin.HandlerFunc {
 			})
 		}
 
+	}
+}
+
+// ResultMiddleware ...
+func ResultMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		//c.MustGet("resultCode").(string)
+		c.Next()
 	}
 }
