@@ -63,6 +63,11 @@ func (server *Server) createServer() {
 			"token": ticketInfo.Token,
 		})
 	})
+	myServer.GET("/test", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
 	myServer.Static("/assets", "./assets")
 }
 

@@ -7,7 +7,8 @@ type SafeService struct {
 }
 
 // QueryService ...
-type QueryService struct{
+type QueryService struct {
+	app *Server
 }
 
 // CheckKey ...
@@ -22,10 +23,5 @@ func (service *SafeService) CheckToken(token string) (bool, error) {
 
 // QueryTicket ...
 func (service *QueryService) QueryTicket(key string) {
-	var ticket []Tickets
-	query := db.where("Key = ?",key).find(&ticket) //Get all matching records
-	query.Error != nil{
-		panic(query.Error)
-	}
-	return ticket
+
 }

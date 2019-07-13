@@ -1,6 +1,6 @@
 package main
 
-// TicketController ...
-type TicketController struct {
+// QueryController ...
+type QueryController struct {
 	server *Server
 }
