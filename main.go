@@ -49,6 +49,12 @@ func (server *Server) createDB() {
 func (server *Server) createServer() {
 	myServer := gin.Default()
 	server.server = myServer
+
+	// Middleware
+	myServer.Use(func(c *gin.Context) {
+		c.Set("DB", server.db)
+	})
+
 	myServer.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -64,8 +70,9 @@ func (server *Server) createServer() {
 		})
 	})
 	myServer.GET("/test", func(c *gin.Context) {
+		service := QueryService{}
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": service.QueryTicket(server.db, "test"),
 		})
 	})
 	myServer.Static("/assets", "./assets")
