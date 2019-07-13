@@ -1,18 +1,20 @@
 package main
 
-import "regexp"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-// CheckKey ...
-func CheckKey(key string) (bool, error) {
-	return regexp.MatchString("[a-zA-Z0-9]{32}", key)
-}
-
-// CheckToken ...
-func CheckToken(token string) (bool, error) {
-	return regexp.MatchString("\\w{8}(-\\w{4}){3}-\\w{12}", token)
-}
-
-// QueryController ...
-type QueryController struct {
+// TicketController ...
+type TicketController struct {
 	server *Server
+}
+
+// Get ...
+func (ctrl *TicketController) Get(c *gin.Context) {
+
+}
+
+// Post ...
+func (ctrl *TicketController) Post(c *gin.Context) {
+
 }

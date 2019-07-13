@@ -53,6 +53,7 @@ func (server *Server) createServer() {
 	// Middleware
 	myServer.Use(func(c *gin.Context) {
 		c.Set("DB", server.db)
+		c.Next()
 	})
 
 	myServer.GET("/ping", func(c *gin.Context) {
