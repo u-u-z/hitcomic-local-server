@@ -5,9 +5,21 @@ import "regexp"
 // SafeService ...
 type SafeService struct {
 }
-
+ 
 // QueryService ...
 type QueryService struct{
+}
+
+// CheckService ...
+type CheckService struct{
+}
+
+// VerifyService ...
+type VerifyService struct{
+}
+
+// PictureService ...
+type PictureService struct{
 }
 
 // CheckKey ...
@@ -20,12 +32,7 @@ func (service *SafeService) CheckToken(token string) (bool, error) {
 	return regexp.MatchString("\\w{8}(-\\w{4}){3}-\\w{12}", token)
 }
 
-// QueryTicket ...
+// QueryTicket  ...
 func (service *QueryService) QueryTicket(key string) {
-	var ticket []Tickets
-	query := db.where("Key = ?",key).find(&ticket) //Get all matching records
-	query.Error != nil{
-		panic(query.Error)
-	}
-	return ticket
+	return Server.db.where("Key = ?",key).first(&ticket) //Get a first matching record
 }
