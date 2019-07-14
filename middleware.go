@@ -30,7 +30,7 @@ func SafeMiddleware() gin.HandlerFunc {
 		} else {
 			c.JSON(200, gin.H{
 				"result": "fake",
-				"info":   "POST params wrong",
+				"info":   "SafeMiddleware: Non-conformity",
 			})
 		}
 	}
@@ -56,7 +56,7 @@ func IsInDBMiddleware() gin.HandlerFunc {
 			} else {
 				c.JSON(200, gin.H{
 					"result": "fake",
-					"info":   "IsInDBMiddleware: error",
+					"info":   "IsInDBMiddleware: tickets.Times NaN",
 				})
 			}
 		}
