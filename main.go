@@ -62,7 +62,7 @@ func (server *Server) createServer() {
 			"message": "pong",
 		})
 	})
-	myServer.POST("/ticket", SafeMiddleware(), ticketController.Post)
+	myServer.POST("/ticket", SafeMiddleware(), IsInDBMiddleware(), ticketController.Post)
 	myServer.GET("/test", func(c *gin.Context) {
 		service := QueryService{}
 		c.JSON(200, gin.H{

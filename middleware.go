@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 // CheckKey ...
@@ -32,7 +33,33 @@ func SafeMiddleware() gin.HandlerFunc {
 				"info":   "POST params wrong",
 			})
 		}
+	}
+}
 
+// IsInDBMiddleware ...
+func IsInDBMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ticketInfo := c.MustGet("ticket").(TicketInfo)
+		db := c.MustGet("DB").(*gorm.DB)
+		tickets := Tickets{}
+		value := db.Where(&Tickets{Key: ticketInfo.Key}).First(&tickets)
+		if value.Error != nil {
+			c.JSON(200, gin.H{
+				"result":    "fake",
+				"info":      "IsInDBMiddleware: DB Query error",
+				"errorInfo": value.Error,
+			})
+		} else {
+			if tickets.Times >= 0 {
+				c.Set("ticketModel", tickets)
+				c.Next()
+			} else {
+				c.JSON(200, gin.H{
+					"result": "fake",
+					"info":   "IsInDBMiddleware: error",
+				})
+			}
+		}
 	}
 }
 
