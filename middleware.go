@@ -21,6 +21,7 @@ func SafeFilterMiddleware() gin.HandlerFunc {
 				"result": "fake",
 				"info":   "SafeFilterMiddleware: Non-conformity",
 			})
+			c.Abort(200)
 		}
 	}
 }
@@ -39,6 +40,7 @@ func SafeIsInDBMiddleware() gin.HandlerFunc {
 				"info":      "SafeIsInDBMiddleware: DB Query error",
 				"errorInfo": value.Error,
 			})
+			c.Abort()
 		} else {
 			if tickets.Times >= 0 {
 				c.Set("ticketModel", tickets)
@@ -49,6 +51,7 @@ func SafeIsInDBMiddleware() gin.HandlerFunc {
 					"result": "fake",
 					"info":   "SafeIsInDBMiddleware: tickets.Times NaN",
 				})
+				c.Abort()
 			}
 		}
 	}
@@ -75,6 +78,7 @@ func SafeIsStaffMiddleware() gin.HandlerFunc {
 				"result": "fuckyou",
 				"info":   "SafeIsStaffMiddleware: is not Staff",
 			})
+			c.Abort()
 		}
 	}
 }
@@ -92,6 +96,7 @@ func SafeIsTicketMiddleware() gin.HandlerFunc {
 				"result": "fuckyou",
 				"info":   "SafeIsTicketMiddleware is not Ticket",
 			})
+			c.Abort()
 		}
 	}
 }
@@ -107,6 +112,7 @@ func SafeIsInvalidMiddleware() gin.HandlerFunc {
 				"result": "invalid",
 				"info":   "SafeIsInvalidMiddleware : invalid!",
 			})
+			c.Abort()
 		} else {
 			c.Next()
 		}
