@@ -63,7 +63,13 @@ func (server *Server) createServer() {
 			"message": "pong",
 		})
 	})
-	myServer.POST("/ticket", SafeFilterMiddleware(), SafeIsInDBMiddleware(), ticketController.Post)
+	myServer.POST("/ticket",
+		SafeFilterMiddleware(),
+		SafeIsInDBMiddleware(),
+		SafeIsTicketMiddleware(),
+		SafeIsInvalidMiddleware(),
+		ticketController.Post,
+	)
 	myServer.POST("/staff", SafeFilterMiddleware(), SafeIsInDBMiddleware(), staffController.Post)
 
 	// Static model

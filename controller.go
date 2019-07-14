@@ -18,7 +18,7 @@ func (ctrl *TicketController) Get(c *gin.Context) {
 // Post ...
 func (ctrl *TicketController) Post(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "fuck wrong",
+		"message": "it works!",
 	})
 }
 
