@@ -63,12 +63,6 @@ func (server *Server) createServer() {
 		})
 	})
 	myServer.POST("/ticket", SafeFilterMiddleware(), SafeIsInDBMiddleware(), ticketController.Post)
-	myServer.GET("/test", func(c *gin.Context) {
-		service := QueryService{}
-		c.JSON(200, gin.H{
-			"message": service.QueryTicket(server.db, "test"),
-		})
-	})
 	myServer.Static("/assets", "./assets")
 }
 

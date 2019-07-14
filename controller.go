@@ -33,10 +33,6 @@ func (ctrl *TicketController) Post(c *gin.Context) {
 			"message": "fuck wrong",
 		})
 	}
-	/*
-		c.JSON(200, gin.H{
-			"message": ctrl.server.db.First(&Tickets{Key: ticketInfo.Key}).Value,
-		})*/
 }
 
 // GetTicketTimes ...
