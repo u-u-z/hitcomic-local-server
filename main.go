@@ -51,6 +51,7 @@ func (server *Server) createServer() {
 	server.server = myServer
 
 	ticketController := &TicketController{server: server}
+	staffController := &StaffController{server: server}
 	// Middleware
 	myServer.Use(func(c *gin.Context) {
 		c.Set("DB", server.db)
@@ -63,6 +64,8 @@ func (server *Server) createServer() {
 		})
 	})
 	myServer.POST("/ticket", SafeFilterMiddleware(), SafeIsInDBMiddleware(), ticketController.Post)
+	myServer.POST("/staff", staffController.Post)
+	// Static model
 	myServer.Static("/assets", "./assets")
 }
 
