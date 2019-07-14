@@ -21,7 +21,7 @@ func (ctrl *TicketController) Post(c *gin.Context) {
 	tickets = c.MustGet("ticketModel").(Tickets)
 	tickets.Times = tickets.Times - 1
 	ctrl.server.db.Save(&tickets)
-	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 3, "success")
+	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "success")
 	c.JSON(200, gin.H{
 		"message": "success",
 	})
