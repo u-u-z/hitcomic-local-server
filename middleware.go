@@ -21,7 +21,7 @@ func SafeFilterMiddleware() gin.HandlerFunc {
 				"result": "fake",
 				"info":   "SafeFilterMiddleware: Non-conformity",
 			})
-			c.Abort(200)
+			c.Abort()
 		}
 	}
 }
