@@ -18,7 +18,7 @@ func CheckToken(token string) (bool, error) {
 }
 
 // SafeMiddleware ...
-func SafeMiddleware() gin.HandlerFunc {
+func SafeFilterMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ticketInfo TicketInfo
 		c.BindJSON(&ticketInfo)
@@ -30,14 +30,14 @@ func SafeMiddleware() gin.HandlerFunc {
 		} else {
 			c.JSON(200, gin.H{
 				"result": "fake",
-				"info":   "SafeMiddleware: Non-conformity",
+				"info":   "SafeFilterMiddleware: Non-conformity",
 			})
 		}
 	}
 }
 
-// IsInDBMiddleware ...
-func IsInDBMiddleware() gin.HandlerFunc {
+// SafeIsInDBMiddleware ...
+func SafeIsInDBMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ticketInfo := c.MustGet("ticket").(TicketInfo)
 		db := c.MustGet("DB").(*gorm.DB)
@@ -46,7 +46,7 @@ func IsInDBMiddleware() gin.HandlerFunc {
 		if value.Error != nil {
 			c.JSON(200, gin.H{
 				"result":    "fake",
-				"info":      "IsInDBMiddleware: DB Query error",
+				"info":      "SafeIsInDBMiddleware: DB Query error",
 				"errorInfo": value.Error,
 			})
 		} else {
@@ -56,7 +56,7 @@ func IsInDBMiddleware() gin.HandlerFunc {
 			} else {
 				c.JSON(200, gin.H{
 					"result": "fake",
-					"info":   "IsInDBMiddleware: tickets.Times NaN",
+					"info":   "SafeIsInDBMiddleware: tickets.Times NaN",
 				})
 			}
 		}
