@@ -31,6 +31,7 @@ func (server *Server) createDB() {
 	connectionString := os.Getenv("ETS_DB")
 	if len(connectionString) == 0 {
 		connectionString = "root:my-secret-pw@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True"
+		//connectionString = "root:1234@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True" //TEST
 	}
 	db, err := gorm.Open("mysql", connectionString)
 	if err != nil {
@@ -74,6 +75,7 @@ func (server *Server) createServer() {
 
 func main() {
 	fmt.Println("dbString example: root:my-secret-pw@tcp(127.0.0.1:3306)/dbname?charset=utf8&parseTime=True")
+	//fmt.Println("dbString example: root:1234@tcp(127.0.0.1:3306)/dbname?charset=utf8&parseTime=True") //TEST
 	ticketServer := &Server{}
 	ticketServer.isDebug = len(os.Getenv("DUAN_DEBUG")) > 0
 	ticketServer.createDB()
