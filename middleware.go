@@ -71,6 +71,7 @@ func ResultMiddleware() gin.HandlerFunc {
 	}
 }
 
+// SafeIsCertMiddleware ...
 func SafeIsCertMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
