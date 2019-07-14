@@ -70,3 +70,9 @@ func ResultMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func SafeIsCertMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
+}
