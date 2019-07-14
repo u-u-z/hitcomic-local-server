@@ -16,6 +16,7 @@ func SafeFilterMiddleware() gin.HandlerFunc {
 			c.Set("ticket", ticketInfo)
 			c.Next()
 		} else {
+			CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeFilterMiddleware: Non-conformity")
 			c.JSON(200, gin.H{
 				"result": "fake",
 				"info":   "SafeFilterMiddleware: Non-conformity",
@@ -32,6 +33,7 @@ func SafeIsInDBMiddleware() gin.HandlerFunc {
 		tickets := Tickets{}
 		value := db.Where(&Tickets{Key: ticketInfo.Key}).First(&tickets)
 		if value.Error != nil {
+			CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeIsInDBMiddleware: DB Query error")
 			c.JSON(200, gin.H{
 				"result":    "fake",
 				"info":      "SafeIsInDBMiddleware: DB Query error",
@@ -42,6 +44,7 @@ func SafeIsInDBMiddleware() gin.HandlerFunc {
 				c.Set("ticketModel", tickets)
 				c.Next()
 			} else {
+				CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeIsInDBMiddleware: tickets.Times NaN")
 				c.JSON(200, gin.H{
 					"result": "fake",
 					"info":   "SafeIsInDBMiddleware: tickets.Times NaN",
@@ -67,6 +70,7 @@ func SafeIsStaffMiddleware() gin.HandlerFunc {
 		if tickets.Type == 3 {
 			c.Next()
 		} else {
+			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 3, "fuckyou: SafeIsStaffMiddleware: is not Staff")
 			c.JSON(200, gin.H{
 				"result": "fuckyou",
 				"info":   "SafeIsStaffMiddleware: is not Staff",
@@ -83,6 +87,7 @@ func SafeIsTicketMiddleware() gin.HandlerFunc {
 		if tickets.Type == 1 || tickets.Type == 2 {
 			c.Next()
 		} else {
+			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 3, "fuckyou: SafeIsTicketMiddleware is not Ticket")
 			c.JSON(200, gin.H{
 				"result": "fuckyou",
 				"info":   "SafeIsTicketMiddleware is not Ticket",
@@ -97,6 +102,7 @@ func SafeIsInvalidMiddleware() gin.HandlerFunc {
 		tickets := Tickets{}
 		tickets = c.MustGet("ticketModel").(Tickets)
 		if tickets.Times == 0 || tickets.Times < 0 {
+			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 1, "invalid: SafeIsInvalidMiddleware : invalid!")
 			c.JSON(200, gin.H{
 				"result": "invalid",
 				"info":   "SafeIsInvalidMiddleware : invalid!",
