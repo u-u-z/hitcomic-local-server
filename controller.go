@@ -17,6 +17,10 @@ func (ctrl *TicketController) Get(c *gin.Context) {
 
 // Post ...
 func (ctrl *TicketController) Post(c *gin.Context) {
+	tickets := Tickets{}
+	tickets = c.MustGet("ticketModel").(Tickets)
+	tickets.Times = tickets.Times - 1
+	ctrl.server.db.Save(&tickets)
 	c.JSON(200, gin.H{
 		"message": "it works!",
 	})
