@@ -74,6 +74,25 @@ func ResultMiddleware() gin.HandlerFunc {
 // SafeIsCertMiddleware ...
 func SafeIsCertMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		tickets := Tickets{}
+		tickets = c.MustGet("ticketModel").(Tickets)
+		if tickets.Type == 3 {
+			c.Next()
+		} else {
+			c.JSON(200, gin.H{})
+		}
+	}
+}
 
+// SafeIsTicketMiddleware ...
+func SafeIsTicketMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tickets := Tickets{}
+		tickets = c.MustGet("ticketModel").(Tickets)
+		if tickets.Type == 1 || tickets.Type == 2 {
+			c.Next()
+		} else {
+			c.JSON(200, gin.H{})
+		}
 	}
 }
