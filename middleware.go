@@ -102,3 +102,19 @@ func SafeIsTicketMiddleware() gin.HandlerFunc {
 		}
 	}
 }
+
+// SafeIsInvalidMiddleware ...
+func SafeIsInvalidMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		tickets := Tickets{}
+		tickets = c.MustGet("ticketModel").(Tickets)
+		if tickets.Times == 0 || tickets.Times < 0 {
+			c.JSON(200, gin.H{
+				"result": "invalid",
+				"info":   "SafeIsInvalidMiddleware : invalid!",
+			})
+		} else {
+			c.Next()
+		}
+	}
+}
