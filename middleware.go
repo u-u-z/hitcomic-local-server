@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 // CheckKey ...
@@ -16,8 +17,8 @@ func CheckToken(token string) (bool, error) {
 	return regexp.MatchString("\\w{8}(-\\w{4}){3}-\\w{12}", token)
 }
 
-// SafeMiddleware ...
-func SafeMiddleware() gin.HandlerFunc {
+// SafeFilterMiddleware ...
+func SafeFilterMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ticketInfo TicketInfo
 		c.BindJSON(&ticketInfo)
@@ -29,10 +30,36 @@ func SafeMiddleware() gin.HandlerFunc {
 		} else {
 			c.JSON(200, gin.H{
 				"result": "fake",
-				"info":   "POST params wrong",
+				"info":   "SafeFilterMiddleware: Non-conformity",
 			})
 		}
+	}
+}
 
+// SafeIsInDBMiddleware ...
+func SafeIsInDBMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ticketInfo := c.MustGet("ticket").(TicketInfo)
+		db := c.MustGet("DB").(*gorm.DB)
+		tickets := Tickets{}
+		value := db.Where(&Tickets{Key: ticketInfo.Key}).First(&tickets)
+		if value.Error != nil {
+			c.JSON(200, gin.H{
+				"result":    "fake",
+				"info":      "SafeIsInDBMiddleware: DB Query error",
+				"errorInfo": value.Error,
+			})
+		} else {
+			if tickets.Times >= 0 {
+				c.Set("ticketModel", tickets)
+				c.Next()
+			} else {
+				c.JSON(200, gin.H{
+					"result": "fake",
+					"info":   "SafeIsInDBMiddleware: tickets.Times NaN",
+				})
+			}
+		}
 	}
 }
 
