@@ -22,6 +22,7 @@ type Logs struct {
 	BasicModel
 	Key    string
 	Result uint
+	Info   string
 }
 
 // CertPicture : logs for ticket
