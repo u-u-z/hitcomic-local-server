@@ -17,7 +17,7 @@ func CheckToken(token string) (bool, error) {
 	return regexp.MatchString("\\w{8}(-\\w{4}){3}-\\w{12}", token)
 }
 
-// SafeMiddleware ...
+// SafeFilterMiddleware ...
 func SafeFilterMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ticketInfo TicketInfo
