@@ -53,6 +53,7 @@ func (server *Server) createServer() {
 	ticketController := &TicketController{server: server}
 	staffController := &StaffController{server: server}
 	// Middleware
+	myServer.Use(Cors())
 	myServer.Use(func(c *gin.Context) {
 		c.Set("DB", server.db)
 		c.Next()
