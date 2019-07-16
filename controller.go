@@ -39,7 +39,10 @@ type StaffController struct {
 
 // Get ...
 func (ctrl *StaffController) Get(c *gin.Context) {
-	c.JSON(200, gin.H{
+	tickets := Tickets{}
+	tickets = c.MustGet("ticketModel").(Tickets)
+	ctrl.server.db.
+		c.JSON(200, gin.H{
 		"message": "it seems works",
 	})
 }

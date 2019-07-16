@@ -28,7 +28,6 @@ type Logs struct {
 // CertPicture : logs for ticket
 type CertPicture struct {
 	BasicModel
-	Tickets   Tickets `gorm:"ForeignKey:TicketKey;AssociationForeignKey:Key"`
-	TicketKey string
-	Path      string `sql:"type:VARCHAR(620) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"`
+	Key  string `gorm:"index"`
+	Path string `sql:"type:VARCHAR(620) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"`
 }

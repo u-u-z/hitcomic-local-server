@@ -29,3 +29,7 @@ func CreateLog(db *gorm.DB, key string, result uint, info string) {
 	}
 	db.Create(&log)
 }
+
+func FindCertPictureRowByTicketKey(db *gorm.DB, key string) {
+
+}
