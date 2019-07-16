@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 // SafeFilterMiddleware ...
@@ -138,5 +142,26 @@ func SafeIsInvalidMiddleware() gin.HandlerFunc {
 		} else {
 			c.Next()
 		}
+	}
+}
+
+// SafeCertPictureMiddleware ..
+func SafeCertPictureMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		file, err := c.FormFile("picture")
+		if err != nil {
+			c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
+			c.Abort()
+			return
+		}
+		filename := uuid.Must(uuid.NewV4()).String()
+		if err := c.SaveUploadedFile(file, "assets/"+filename); err != nil {
+			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
+			return
+		}
+		c.JSON(200, gin.H{
+			"f": file.Header.Get("Content-Type"),
+		})
+		c.Next()
 	}
 }
