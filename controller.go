@@ -41,9 +41,22 @@ type StaffController struct {
 func (ctrl *StaffController) Get(c *gin.Context) {
 	tickets := Tickets{}
 	tickets = c.MustGet("ticketModel").(Tickets)
-	ctrl.server.db.
+	var certPictures []CertPicture
+	result := ctrl.server.db.Where(&CertPicture{Key: tickets.Key}).Find(&certPictures)
+
+	if result.Error != nil {
 		c.JSON(200, gin.H{
-		"message": "it seems works",
+			"result":  "fake",
+			"message": "DB query error",
+		})
+		c.Abort()
+	}
+
+	c.JSON(200, gin.H{
+		"result":   "success",
+		"quantity": result.RowsAffected,
+		"times":    tickets.Times,
+		"records":  certPictures,
 	})
 }
 
