@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -42,10 +41,10 @@ func SafeFilterMiddlewareByGet() gin.HandlerFunc {
 			c.Set("ticket", ticketInfo)
 			c.Next()
 		} else {
-			CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeFilterMiddleware: Non-conformity")
+			CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeFilterMiddlewareByGet: Non-conformity")
 			c.JSON(200, gin.H{
 				"result": "fake",
-				"info":   "SafeFilterMiddlewareByGet: Non-conformity",
+				"info":   "SafeFilterMiddlewareByGet: Non-conformity Staff",
 			})
 			c.Abort()
 		}
@@ -145,22 +144,32 @@ func SafeIsInvalidMiddleware() gin.HandlerFunc {
 	}
 }
 
-// SafeCertPictureMiddleware ..
-func SafeCertPictureMiddleware() gin.HandlerFunc {
+// SafeStaffPictureMiddleware ..
+func SafeStaffPictureMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		tickets := Tickets{}
+		tickets = c.MustGet("ticketModel").(Tickets)
 		file, err := c.FormFile("picture")
-		if err != nil {
-			c.String(http.StatusBadRequest, fmt.Sprintf("get form err: %s", err.Error()))
+		if err != nil || file.Header.Get("Content-Type") != "image/jpeg" {
+			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 6, "invalid: SafeStaffPictureMiddleware : get file faild")
+			c.JSON(http.StatusBadRequest, gin.H{
+				"result": "faild",
+				"info":   "SafeStaffPictureMiddleware : get file faild",
+			})
 			c.Abort()
-			return
 		}
 		filename := uuid.Must(uuid.NewV4()).String()
-		if err := c.SaveUploadedFile(file, "assets/"+filename); err != nil {
-			c.String(http.StatusBadRequest, fmt.Sprintf("upload file err: %s", err.Error()))
-			return
+		if err := c.SaveUploadedFile(file, "assets/"+filename+".jpg"); err != nil {
+			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 6, "invalid: SafeStaffPictureMiddleware : get file faild")
+			c.JSON(http.StatusBadRequest, gin.H{
+				"result": "faild",
+				"info":   "SafeStaffPictureMiddleware : get file faild",
+			})
+			c.Abort()
 		}
-		c.JSON(200, gin.H{
-			"f": file.Header.Get("Content-Type"),
+		c.Set("staffPicture", &StaffPicture{
+			Key:  tickets.Key,
+			Path: filename,
 		})
 		c.Next()
 	}

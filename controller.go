@@ -41,8 +41,8 @@ type StaffController struct {
 func (ctrl *StaffController) Get(c *gin.Context) {
 	tickets := Tickets{}
 	tickets = c.MustGet("ticketModel").(Tickets)
-	var certPictures []CertPicture
-	result := ctrl.server.db.Where(&CertPicture{Key: tickets.Key}).Find(&certPictures)
+	var staffPictures []StaffPicture
+	result := ctrl.server.db.Where(&StaffPicture{Key: tickets.Key}).Find(&staffPictures)
 
 	if result.Error != nil {
 		c.JSON(200, gin.H{
@@ -56,12 +56,13 @@ func (ctrl *StaffController) Get(c *gin.Context) {
 		"result":   "success",
 		"quantity": result.RowsAffected,
 		"times":    tickets.Times,
-		"records":  certPictures,
+		"records":  staffPictures,
 	})
 }
 
 // Post ...
 func (ctrl *StaffController) Post(c *gin.Context) {
+
 	c.JSON(200, gin.H{
 		"message": "it seems works",
 	})

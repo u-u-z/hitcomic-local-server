@@ -41,7 +41,7 @@ func (server *Server) createDB() {
 
 	db.AutoMigrate(&Tickets{})
 	db.AutoMigrate(&Logs{})
-	db.AutoMigrate(&CertPicture{})
+	db.AutoMigrate(&StaffPicture{})
 
 	server.db = db
 }
@@ -83,12 +83,12 @@ func (server *Server) createServer() {
 		SafeIsInDBMiddleware(),
 		SafeIsStaffMiddleware(),
 		SafeIsInvalidMiddleware(),
-		SafeCertPictureMiddleware(),
+		SafeStaffPictureMiddleware(),
 		staffController.Post,
 	)
 
 	// Static model
-	myServer.Static("/assets", "./assets")
+	myServer.Static("/cert", "./assets")
 }
 
 func main() {

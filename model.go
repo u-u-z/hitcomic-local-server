@@ -25,8 +25,8 @@ type Logs struct {
 	Info   string
 }
 
-// CertPicture : logs for ticket
-type CertPicture struct {
+// StaffPicture : logs for ticket
+type StaffPicture struct {
 	BasicModel
 	Key  string `gorm:"index"`
 	Path string `sql:"type:VARCHAR(620) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"`
