@@ -90,13 +90,15 @@ func (server *Server) createServer() {
 
 	// Static model
 	myServer.Static("/cert", "./assets")
+	myServer.Static("/client", "./client")
 }
 
 func main() {
-	fmt.Println("dbString example: root:my-secret-pw@tcp(127.0.0.1:3306)/dbname?charset=utf8&parseTime=True")
+	os.Mkdir("./asstes", 0777)
 	ticketServer := &Server{}
 	ticketServer.isDebug = len(os.Getenv("DUAN_DEBUG")) > 0
 	ticketServer.createDB()
 	ticketServer.createServer()
 	ticketServer.server.Run()
+
 }
