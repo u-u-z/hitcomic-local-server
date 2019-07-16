@@ -9,7 +9,7 @@ import (
 func SafeFilterMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ticketInfo TicketInfo
-		c.BindJSON(&ticketInfo)
+		c.BindJSON(&ticketInfo) // Bind json just form HTTP Post.
 		keyStatus, _ := CheckKey(ticketInfo.Key)
 		tokenStatus, _ := CheckToken(ticketInfo.Token)
 		if keyStatus && tokenStatus {
@@ -20,6 +20,28 @@ func SafeFilterMiddleware() gin.HandlerFunc {
 			c.JSON(200, gin.H{
 				"result": "fake",
 				"info":   "SafeFilterMiddleware: Non-conformity",
+			})
+			c.Abort()
+		}
+	}
+}
+
+// SafeFilterMiddlewareByGet ...
+func SafeFilterMiddlewareByGet() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var ticketInfo TicketInfo
+		ticketInfo.Key = c.Param("key")
+		ticketInfo.Token = "4D96ADBB-C164-4AC4-A6FA-4513A0272F05"
+		keyStatus, _ := CheckKey(ticketInfo.Key)
+		tokenStatus, _ := CheckToken(ticketInfo.Token)
+		if keyStatus && tokenStatus {
+			c.Set("ticket", ticketInfo)
+			c.Next()
+		} else {
+			CreateLog(c.MustGet("DB").(*gorm.DB), ticketInfo.Key, 2, "Fake: SafeFilterMiddleware: Non-conformity")
+			c.JSON(200, gin.H{
+				"result": "fake",
+				"info":   "SafeFilterMiddlewareByGet: Non-conformity",
 			})
 			c.Abort()
 		}
