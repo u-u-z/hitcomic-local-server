@@ -17,8 +17,7 @@ func (ctrl *TicketController) Get(c *gin.Context) {
 
 // Post ...
 func (ctrl *TicketController) Post(c *gin.Context) {
-	tickets := Tickets{}
-	tickets = c.MustGet("ticketModel").(Tickets)
+	tickets := c.MustGet("ticketModel").(Tickets)
 	tickets.Times = tickets.Times - 1
 	ctrl.server.db.Save(&tickets)
 	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "success")
@@ -39,21 +38,19 @@ type StaffController struct {
 
 // Get ...
 func (ctrl *StaffController) Get(c *gin.Context) {
-	tickets := Tickets{}
-	tickets = c.MustGet("ticketModel").(Tickets)
+	tickets := c.MustGet("ticketModel").(Tickets)
 	var staffPictures []StaffPicture
 	result := ctrl.server.db.Where(&StaffPicture{Key: tickets.Key}).Find(&staffPictures)
 
 	if result.Error != nil {
 		c.JSON(200, gin.H{
-			"result":  "fake",
-			"message": "DB query error",
+			"message": "faild",
 		})
 		c.Abort()
 	}
-
+	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "success : GET STAFF PICTURE")
 	c.JSON(200, gin.H{
-		"result":   "success",
+		"message":  "success",
 		"quantity": result.RowsAffected,
 		"times":    tickets.Times,
 		"records":  staffPictures,
@@ -62,8 +59,15 @@ func (ctrl *StaffController) Get(c *gin.Context) {
 
 // Post ...
 func (ctrl *StaffController) Post(c *gin.Context) {
+	tickets := c.MustGet("ticketModel").(Tickets)
+	staffPicture := c.MustGet("staffPicture").(StaffPicture)
+
+	ctrl.server.db.Create(&StaffPicture{
+		Key:  tickets.Key,
+		Path: staffPicture.Path,
+	})
 
 	c.JSON(200, gin.H{
-		"message": "it seems works",
+		"message": "success",
 	})
 }

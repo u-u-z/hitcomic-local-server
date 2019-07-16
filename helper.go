@@ -19,18 +19,12 @@ func CheckToken(token string) (bool, error) {
 
 // CreateLog ...
 func CreateLog(db *gorm.DB, key string, result uint, info string) {
-	log := Logs{
+	db.Create(&Logs{
 		Key:    key,
 		Result: result,
 		Info:   info,
 		BasicModel: BasicModel{
 			CreatedAt: time.Now(),
 		},
-	}
-	db.Create(&log)
-}
-
-// FindStaffPictureRowByTicketKey ...
-func FindStaffPictureRowByTicketKey(db *gorm.DB, key string) {
-
+	})
 }
