@@ -23,11 +23,10 @@
 
   自动启动：`yarn develop`（推荐，监测到文件变化后，自动更新服务端）
 
-  
+
 
   注意⚠️：在项目启动中 Sequelize 会自动执行`sync()`功能，根据./models/目录下的模型创建数据表
 
-  
 
 # hitapp-local-server API 文档
 
@@ -108,9 +107,7 @@
 * 响应报文：
 
   ```json
-  Content-Type: "application/json"
-  {	
-      "status":"success",
+  Content-Type: "application/j
       "result":"pong"
   }
   ```
@@ -140,8 +137,6 @@
   | token  | string   | 鉴权、认证     |
   | key    | string   | 进行查询的票码 |
 
-  
-
 * 响应报文：200
 
   ```json
@@ -162,7 +157,6 @@
   * "fake" - 假票（不存在数据库内的票）
   * "fuckyou" - 证件码进入检票口，票码进入证件检票口
 
-  
 
 ### Staff证件 核销接口
 
@@ -186,8 +180,6 @@
   | ------ | -------- | -------------- |
   | token  | string   | 鉴权、认证     |
   | key    | string   | 进行查询的票码 |
-
-  
 
 - 响应报文：200
 
@@ -231,8 +223,6 @@
   | 字段名 | 数据类型 | 说明           |
   | ------ | -------- | -------------- |
   | key    | string   | 进行查询的票码 |
-
-  
 
 - 响应报文：200
 
