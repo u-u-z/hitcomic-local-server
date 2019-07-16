@@ -12,7 +12,7 @@ type BasicModel struct {
 // Tickets :
 type Tickets struct {
 	BasicModel
-	Key   string
+	Key   string `gorm:"index"`
 	Type  uint
 	Times uint
 }
@@ -28,7 +28,7 @@ type Logs struct {
 // CertPicture : logs for ticket
 type CertPicture struct {
 	BasicModel
-	Tickets  Tickets `gorm:"ForeignKey:TicketID"`
-	TicketID uint64
-	Path     string `sql:"type:VARCHAR(620) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"`
+	Tickets   Tickets `gorm:"ForeignKey:TicketKey;AssociationForeignKey:Key"`
+	TicketKey string
+	Path      string `sql:"type:VARCHAR(620) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"`
 }

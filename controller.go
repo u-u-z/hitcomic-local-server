@@ -37,9 +37,16 @@ type StaffController struct {
 	server *Server
 }
 
+// Get ...
+func (ctrl *StaffController) Get(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "it seems works",
+	})
+}
+
 // Post ...
 func (ctrl *StaffController) Post(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "fuck wrong",
+		"message": "it seems works",
 	})
 }

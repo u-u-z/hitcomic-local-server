@@ -70,7 +70,15 @@ func (server *Server) createServer() {
 		SafeIsInvalidMiddleware(),
 		ticketController.Post,
 	)
-	myServer.POST("/staff", SafeFilterMiddleware(), SafeIsInDBMiddleware(), staffController.Post)
+	myServer.GET("/staff/:key",
+		SafeFilterMiddlewareByGet(),
+		SafeIsInDBMiddleware(),
+		SafeIsStaffMiddleware(),
+		SafeIsInvalidMiddleware(),
+		staffController.Get,
+	)
+
+	myServer.POST("/staff/:key")
 
 	// Static model
 	myServer.Static("/assets", "./assets")
