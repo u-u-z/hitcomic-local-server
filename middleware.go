@@ -163,7 +163,7 @@ func SafeStaffPictureMiddleware() gin.HandlerFunc {
 			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 6, "invalid: SafeStaffPictureMiddleware : get file faild")
 			c.JSON(http.StatusBadRequest, gin.H{
 				"result": "faild",
-				"info":   "SafeStaffPictureMiddleware : get file faild",
+				"info":   "SafeStaffPictureMiddleware : create file faild",
 			})
 			c.Abort()
 		}

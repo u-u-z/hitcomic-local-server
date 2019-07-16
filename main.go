@@ -94,7 +94,7 @@ func (server *Server) createServer() {
 }
 
 func main() {
-	os.Mkdir("./asstes", 0777)
+	os.Mkdir("./assets", 0777)
 	ticketServer := &Server{}
 	ticketServer.isDebug = len(os.Getenv("DUAN_DEBUG")) > 0
 	ticketServer.createDB()
