@@ -61,7 +61,7 @@ func (server *Server) createServer() {
 
 	myServer.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"result": "pong",
 		})
 	})
 	myServer.POST("/ticket",

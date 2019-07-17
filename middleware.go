@@ -167,7 +167,7 @@ func SafeStaffPictureMiddleware() gin.HandlerFunc {
 			})
 			c.Abort()
 		}
-		c.Set("staffPicture", &StaffPicture{
+		c.Set("staffPicture", StaffPicture{
 			Key:  tickets.Key,
 			Path: filename,
 		})

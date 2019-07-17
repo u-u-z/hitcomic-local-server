@@ -22,7 +22,7 @@ func (ctrl *TicketController) Post(c *gin.Context) {
 	ctrl.server.db.Save(&tickets)
 	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "Ticket verification!")
 	c.JSON(200, gin.H{
-		"message": "success",
+		"result": "success",
 	})
 }
 
@@ -44,13 +44,13 @@ func (ctrl *StaffController) Get(c *gin.Context) {
 
 	if result.Error != nil {
 		c.JSON(200, gin.H{
-			"message": "faild",
+			"result": "faild",
 		})
 		c.Abort()
 	}
 	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "success : GET STAFF PICTURE")
 	c.JSON(200, gin.H{
-		"message":  "success",
+		"result":   "success",
 		"quantity": result.RowsAffected,
 		"times":    tickets.Times,
 		"records":  staffPictures,
@@ -68,6 +68,6 @@ func (ctrl *StaffController) Post(c *gin.Context) {
 	})
 	CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 0, "success : UPLOAD STAFF PICTURE "+staffPicture.Path)
 	c.JSON(200, gin.H{
-		"message": "success",
+		"result": "success",
 	})
 }
