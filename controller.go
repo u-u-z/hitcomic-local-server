@@ -60,6 +60,8 @@ func (ctrl *StaffController) Get(c *gin.Context) {
 // Post ...
 func (ctrl *StaffController) Post(c *gin.Context) {
 	tickets := c.MustGet("ticketModel").(Tickets)
+	tickets.Times = tickets.Times - 1
+	ctrl.server.db.Save(&tickets)
 	staffPicture := c.MustGet("staffPicture").(StaffPicture)
 
 	ctrl.server.db.Create(&StaffPicture{
