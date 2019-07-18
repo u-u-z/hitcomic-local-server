@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -159,11 +160,14 @@ func SafeStaffPictureMiddleware() gin.HandlerFunc {
 			c.Abort()
 		}
 		filename := uuid.Must(uuid.NewV4()).String()
-		if err := c.SaveUploadedFile(file, "assets/"+filename+".jpg"); err != nil {
+		err = c.SaveUploadedFile(file, "assets/"+filename+".jpg")
+		if err != nil {
+			fmt.Println(err)
 			CreateLog(c.MustGet("DB").(*gorm.DB), tickets.Key, 6, "invalid: SafeStaffPictureMiddleware : get file faild")
-			c.JSON(http.StatusBadRequest, gin.H{
-				"result": "faild",
-				"info":   "SafeStaffPictureMiddleware : create file faild",
+			c.JSON(200, gin.H{
+				"result":  "faild",
+				"info":    "SafeStaffPictureMiddleware : create file faild",
+				"message": err,
 			})
 			c.Abort()
 		}
