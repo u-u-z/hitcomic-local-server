@@ -30,7 +30,7 @@ type TicketInfo struct {
 func (server *Server) createDB() {
 	connectionString := os.Getenv("ETS_DB")
 	if len(connectionString) == 0 {
-		connectionString = "root:my-secret-pw@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True"
+		connectionString = "root:example@tcp(127.0.0.1:3306)/hitcomic?charset=utf8&parseTime=True"
 	}
 	db, err := gorm.Open("mysql", connectionString)
 	if err != nil {

@@ -159,7 +159,7 @@ func SafeStaffPictureMiddleware() gin.HandlerFunc {
 			})
 			c.Abort()
 		}
-		filename := uuid.Must(uuid.NewV4()).String()
+		filename := uuid.NewV4().String()
 		err = c.SaveUploadedFile(file, "assets/"+filename+".jpg")
 		if err != nil {
 			fmt.Println(err)
