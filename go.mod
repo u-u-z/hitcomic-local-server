@@ -1,4 +1,4 @@
-module hit
+module hitcomic-local-server
 
 go 1.18
 
